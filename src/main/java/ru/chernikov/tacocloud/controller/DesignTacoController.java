@@ -3,12 +3,14 @@ package ru.chernikov.tacocloud.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import ru.chernikov.tacocloud.model.Ingredient;
 import ru.chernikov.tacocloud.model.Ingredient.Type;
 import ru.chernikov.tacocloud.model.Taco;
 import ru.chernikov.tacocloud.model.TacoOrder;
 
+import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -63,7 +65,10 @@ public class DesignTacoController {
     }
 
     @PostMapping
-    public String processTaco(Taco taco, @ModelAttribute TacoOrder tacoOrder) {
+    public String processTaco(@Valid Taco taco, Errors errors, @ModelAttribute TacoOrder tacoOrder) {
+        if (errors.hasErrors()) {
+            return "design";
+        }
         tacoOrder.addTaco(taco);
         log.info("Processing taco: {}", taco);
         return "redirect:/orders/current";
