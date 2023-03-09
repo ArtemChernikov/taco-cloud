@@ -6,16 +6,20 @@ import org.hibernate.validator.constraints.CreditCardNumber;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 /**
  * @author Artem Chernikov
- * @version 1.0
- * @since 20.02.2023
+ * @version 1.1
+ * @since 09.03.2023
  */
 @Data
-public class TacoOrder {
+public class TacoOrder implements Serializable {
+    private static final long SERIAL_VERSION_UID = 1L;
+    private Long id;
     @NotBlank(message = "Name is required")
     private String deliveryName;
     @NotBlank(message = "Street is required")
@@ -31,6 +35,7 @@ public class TacoOrder {
     private String ccExpiration;
     @Digits(integer = 3, fraction = 0, message = "Invalid CVV")
     private String ccCVV;
+    private Date placedAt;
 
     private List<Taco> tacos = new ArrayList<>();
 
